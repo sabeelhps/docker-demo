@@ -1,0 +1,30 @@
+version: '3.8'
+
+services: 
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: docker-demo
+    ports:
+      - '3000:3000'
+    volumes: 
+      - ./:/app
+    depends_on:
+      - mysqldb
+  mysqldb:
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: demo
+    ports:
+      - '3307:3306'
+    volumes: 
+      - db-config:/etc/mysql
+      - db-data:/var/lib/mysql
+      - ./db/backup/files/:/data_backup/data
+
+volumes: 
+  db-config:
+  db-data:
